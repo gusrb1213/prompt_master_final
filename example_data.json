@@ -1,0 +1,1885 @@
+{
+  "problemset": {
+    "id": "promptmaster-100",
+    "title": "프롬프트 엔지니어링 기초 100제",
+    "subtitle": "CodeUp 스타일 연습 · V11 자동 채점",
+    "description": "업무 상황을 읽고 LLM에게 보낼 지시 프롬프트를 작성하세요. 난이도별로 요구되는 제약(형식·톤·분량)이 달라집니다."
+  },
+  "levels": [
+    {
+      "id": "beginner",
+      "name": "입문자",
+      "order": 1,
+      "badge": "Lv.1",
+      "description": "한 가지 규칙만 지키면 됩니다."
+    },
+    {
+      "id": "elementary",
+      "name": "초급",
+      "order": 2,
+      "badge": "Lv.2",
+      "description": "일상 업무에 쓰는 기본 지시입니다."
+    },
+    {
+      "id": "intermediate",
+      "name": "중급",
+      "order": 3,
+      "badge": "Lv.3",
+      "description": "형식과 톤을 함께 요구합니다."
+    },
+    {
+      "id": "advanced",
+      "name": "고급",
+      "order": 4,
+      "badge": "Lv.4",
+      "description": "3가지 제약을 모두 충족해야 합니다."
+    },
+    {
+      "id": "expert",
+      "name": "전문가",
+      "order": 5,
+      "badge": "Lv.5",
+      "description": "복합 업무·거버넌스 수준의 지시 설계입니다."
+    }
+  ],
+  "constraints": [
+    {
+      "id": "json_format",
+      "name": "JSON 포맷",
+      "positive": "응답은 반드시 유효한 JSON 객체나 배열 형식으로만 출력해야 합니다. 마크다운, 자연어 설명 없이 순수 JSON만 반환하세요.",
+      "negative": "응답 형식은 자유롭게 작성해도 됩니다. JSON, 일반 텍스트, 마크다운 등 어떤 형식이든 상관없습니다."
+    },
+    {
+      "id": "business_tone",
+      "name": "비즈니스 톤",
+      "positive": "전문적이고 격식 있는 비즈니스 어투를 유지하세요. 존댓말을 사용하고 구어체·이모티콘을 배제하세요.",
+      "negative": "친구에게 말하듯 편하고 캐주얼한 말투로 작성하세요. 구어체와 이모티콘을 사용해도 됩니다."
+    },
+    {
+      "id": "length_limit",
+      "name": "간결한 분량",
+      "positive": "전체 응답은 반드시 네 문장 이하로 간결하게 작성하세요. 핵심만 전달하세요.",
+      "negative": "가능한 한 상세하고 길게 작성하세요. 여러 단락과 충분한 설명을 포함해도 됩니다."
+    }
+  ],
+  "scenarios": [
+    {
+      "number": 1001,
+      "id": "b01_greeting",
+      "level": "beginner",
+      "title": "고객에게 정중하게 인사하기",
+      "domain": "카페 / 응대",
+      "situation": "신규 고객이 앱에 첫 로그인했습니다. 환영 메시지를 AI가 작성해야 합니다.",
+      "objective": "AI가 **친절한 존댓말**로 인사하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "존댓말·정중한 비즈니스 톤을 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '고객에게 존댓말로 따뜻하게 인사하는 문장을 작성해 주세요.'"
+    },
+    {
+      "number": 1002,
+      "id": "b02_short",
+      "level": "beginner",
+      "title": "짧게 답변 요청하기",
+      "domain": "학습 / Q&A",
+      "situation": "학생이 '파이썬이 뭐예요?'라고 물었습니다. 설명이 너무 길어지는 것을 막고 싶습니다.",
+      "objective": "AI 답변이 **4문장 이하**가 되도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "'4문장 이하'처럼 분량을 숫자로 제한"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '초등학생도 이해할 수 있게, 네 문장 이내로만 설명해 주세요.'"
+    },
+    {
+      "number": 1003,
+      "id": "b03_no_emoji",
+      "level": "beginner",
+      "title": "이모티콘 없이 답하기",
+      "domain": "사내 챗봇",
+      "situation": "사내 도우미 봇이 😊🔥 같은 이모티콘을 자주 붙입니다. 공식 안내 톤이 필요합니다.",
+      "objective": "**격식 있는 업무 톤**을 쓰도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "구어체·이모티콘 배제, 존댓말 요구"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '이모티콘 없이, 사내 공지에 쓸 수 있는 존댓말 문체로 답해 주세요.'"
+    },
+    {
+      "number": 1004,
+      "id": "b04_one_topic",
+      "level": "beginner",
+      "title": "한 가지 질문에만 답하기",
+      "domain": "고객센터",
+      "situation": "고객이 '배송 조회 방법'만 물었는데 AI가 반품·교환까지 길게 설명합니다.",
+      "objective": "답변을 **짧고 핵심만** 하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "간결한 분량(문장 수 제한) 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '배송 조회 방법만, 네 문장 이하로 안내해 주세요.'"
+    },
+    {
+      "number": 1005,
+      "id": "b05_polite_email",
+      "level": "beginner",
+      "title": "공손한 문장으로 메일 초안",
+      "domain": "행정 / 민원",
+      "situation": "민원 답변 메일 초안을 AI에게 부탁합니다. 반말이나 속어는 피해야 합니다.",
+      "objective": "**정중한 비즈니스 어투**로 메일을 쓰도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "존댓말·공손한 문체 지시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '민원 답변 이메일 초안을, 공손한 존댓말 비즈니스 문체로 작성해 주세요.'"
+    },
+    {
+      "number": 1006,
+      "id": "e01_json_name",
+      "level": "elementary",
+      "title": "이름·직함 JSON으로 받기",
+      "domain": "HR / 명함",
+      "situation": "신입 사원 소개 문구에서 이름(name)과 직함(title)만 구조화해 저장하려 합니다.",
+      "objective": "AI 출력을 **JSON만** 쓰도록 지시하는 프롬프트를 작성하세요. (키: name, title)",
+      "checklist": [
+        "순수 JSON 출력",
+        "필수 키 name, title 언급"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'name과 title 키만 가진 JSON 객체로만 출력하세요.'"
+    },
+    {
+      "number": 1007,
+      "id": "e02_meeting_tone",
+      "level": "elementary",
+      "title": "회의 안내 톤 맞추기",
+      "domain": "팀 운영",
+      "situation": "내일 오전 10시 팀 회의 안내 문구를 슬랙에 올릴 예정입니다.",
+      "objective": "**비즈니스 존댓말**로 안내하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "격식 있는 톤 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '팀 회의 안내 문구를, 정중한 비즈니스 존댓말로 작성해 주세요.'"
+    },
+    {
+      "number": 1008,
+      "id": "e03_brief_summary",
+      "level": "elementary",
+      "title": "뉴스 한 줄 요약",
+      "domain": "리서치",
+      "situation": "긴 기사를 읽고 핵심만 팀에 공유해야 합니다.",
+      "objective": "요약이 **4문장 이하**가 되도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "문장 수 상한 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '아래 기사의 핵심을 네 문장 이하로 요약해 주세요.'"
+    },
+    {
+      "number": 1009,
+      "id": "e04_json_yesno",
+      "level": "elementary",
+      "title": "예/아니오 JSON 응답",
+      "domain": "설문 / 분류",
+      "situation": "고객 문의가 '환불 가능 여부'인지 자동 분류하려 합니다.",
+      "objective": "결과를 **JSON**(키: answer, reason)만 출력하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON 단일 출력",
+        "answer·reason 키"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 55,
+      "hint": "예: 'answer와 reason 키를 가진 JSON으로만, 존댓말 reason을 작성하세요.'"
+    },
+    {
+      "number": 1010,
+      "id": "e05_product_intro",
+      "level": "elementary",
+      "title": "제품 소개 짧게 쓰기",
+      "domain": "마케팅",
+      "situation": "신제품 소개를 랜딩 페이지 상단에 넣을 짧은 문구가 필요합니다.",
+      "objective": "**존댓말 톤**이면서 **4문장 이하**인 소개문을 쓰도록 지시하세요.",
+      "checklist": [
+        "비즈니스 톤",
+        "분량 제한"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 55,
+      "hint": "예: '제품 소개를 존댓말로, 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1011,
+      "id": "i01_order_status",
+      "level": "intermediate",
+      "title": "주문 상태 JSON 보고",
+      "domain": "이커머스",
+      "situation": "주문번호·배송단계 데이터가 있습니다. 대시보드에 넣을 JSON 한 덩어리가 필요합니다.",
+      "objective": "order_id, status, eta 키를 가진 **JSON만** 출력하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON 형식",
+        "필수 키 3개"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "키 이름을 프롬프트에 그대로 적어 주세요."
+    },
+    {
+      "number": 1012,
+      "id": "i02_apology",
+      "level": "intermediate",
+      "title": "지연 배송 사과문",
+      "domain": "CS",
+      "situation": "배송이 2일 지연되었습니다. 고객에게 보낼 사과 메시지 초안이 필요합니다.",
+      "objective": "**정중한 비즈니스 톤**으로, **4문장 이하** 사과문을 쓰도록 지시하세요.",
+      "checklist": [
+        "존댓말·공손한 톤",
+        "간결한 분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "감정 과장 없이 사실과 사과를 담으세요."
+    },
+    {
+      "number": 1013,
+      "id": "i03_faq_json",
+      "level": "intermediate",
+      "title": "FAQ 항목 JSON 생성",
+      "domain": "헬프센터",
+      "situation": "자주 묻는 질문 1개에 대한 FAQ를 데이터베이스에 넣을 형식으로 받아야 합니다.",
+      "objective": "question, answer 키를 가진 **JSON만** 출력하도록 지시하세요. answer는 존댓말로.",
+      "checklist": [
+        "JSON",
+        "비즈니스 톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "마크다운 코드블록 없이 JSON만 요구하세요."
+    },
+    {
+      "number": 1014,
+      "id": "i04_weekly_report",
+      "level": "intermediate",
+      "title": "주간 업무 3줄 보고",
+      "domain": "팀 리더",
+      "situation": "이번 주 완료·진행·이슈를 상사에게 짧게 보고합니다.",
+      "objective": "**보고서 톤**으로 **4문장 이하** 요약하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "비즈니스 톤",
+        "분량 제한"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "완료/진행/이슈 구조를 문장 안에 담아도 됩니다."
+    },
+    {
+      "number": 1015,
+      "id": "i05_price_table",
+      "level": "intermediate",
+      "title": "요금제 비교 JSON",
+      "domain": "요금 안내",
+      "situation": "Basic·Pro 두 요금제의 가격·기능을 JSON으로 웹에 표시하려 합니다.",
+      "objective": "plans 배열을 포함한 **JSON만** 출력하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON 구조",
+        "격식 있는 설명(톤)"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 60,
+      "hint": "배열·객체 구조를 프롬프트에 간단히 적어 주세요."
+    },
+    {
+      "number": 1016,
+      "id": "a01_meeting_minutes",
+      "level": "advanced",
+      "title": "회의록 JSON 요약",
+      "domain": "PM / 회의",
+      "situation": "30분 스탠드업 녹취가 있습니다. decisions, action_items 키가 있는 JSON이 필요합니다.",
+      "objective": "회의록을 **JSON만**, **비즈니스 톤**으로, **4문장 이하** 필드 설명 없이 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON + 키 명시",
+        "존댓말",
+        "간결"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "세 가지 제약을 각각 한 문장씩 넣어 보세요."
+    },
+    {
+      "number": 1017,
+      "id": "a02_bug_ticket",
+      "level": "advanced",
+      "title": "버그 티켓 JSON 작성",
+      "domain": "개발 / QA",
+      "situation": "재현 단계·심각도·담당 제안을 Jira에 넣을 JSON 초안이 필요합니다.",
+      "objective": "title, severity, steps 키를 가진 **순수 JSON**으로, **객관적 보고서 톤** 지시문을 작성하세요.",
+      "checklist": [
+        "JSON 단일 출력",
+        "비즈니스·객관적 문체"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "감탄사·구어체를 쓰지 말라고 명시하세요."
+    },
+    {
+      "number": 1018,
+      "id": "a03_campaign_result",
+      "level": "advanced",
+      "title": "캠페인 결과 브리핑",
+      "domain": "마케팅",
+      "situation": "이메일 캠페인 오픈율 22%, 클릭률 3.1%입니다. 팀 채널에 올릴 짧은 브리핑이 필요합니다.",
+      "objective": "**JSON**(metric, value) 형태와 **4문장 이하** 텍스트 요약을 동시에 요구하는 지시 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON",
+        "분량",
+        "톤 중 2가지 이상"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 63,
+      "hint": "출력 형식을 'JSON만' 또는 'JSON + 짧은 문장' 중 하나로 명확히 하세요."
+    },
+    {
+      "number": 1019,
+      "id": "a04_policy_notice",
+      "level": "advanced",
+      "title": "정책 변경 공지",
+      "domain": "컴플라이언스",
+      "situation": "개인정보 처리방침 일부 조항이 다음 달부터 변경됩니다. 사용자 공지문이 필요합니다.",
+      "objective": "**공식 공지 톤(존댓말)**으로 **4문장 이하** 작성하도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "비즈니스·공식 톤",
+        "분량 상한"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "법률 용어는 유지하되 과장된 표현은 피하라고 적을 수 있습니다."
+    },
+    {
+      "number": 1020,
+      "id": "a05_inventory_alert",
+      "level": "advanced",
+      "title": "재고 부족 알림 JSON",
+      "domain": "물류",
+      "situation": "SKU-A123 재고가 안전재고 이하입니다. 운영팀 슬랙 봇 메시지용 JSON이 필요합니다.",
+      "objective": "sku, stock, threshold 키의 **JSON만**, **간결한 분량**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON 키 명시",
+        "4문장 이하(또는 JSON만)"
+      ],
+      "active_constraints": [
+        "json_format",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "설명 문장 없이 JSON만 받을지 분명히 하세요."
+    },
+    {
+      "number": 1021,
+      "id": "x01_churn_risk",
+      "level": "expert",
+      "title": "이탈 위험 고객 요약",
+      "domain": "B2B SaaS",
+      "situation": "30일 미접속·결제 실패 고객 80명. 오늘 오후 경영 보고용 1페이지 요약이 필요합니다.",
+      "objective": "summary, risk_level, action_items 키의 **JSON만**, **비즈니스 톤**, **4문장 이하**로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON 3키",
+        "존댓말 보고서 톤",
+        "분량 제한"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "과제·출력 형식·톤·분량을 각각 한 문장으로 나누세요."
+    },
+    {
+      "number": 1022,
+      "id": "x02_incident",
+      "level": "expert",
+      "title": "장애 1차 브리핑",
+      "domain": "SRE",
+      "situation": "결제 API p95 4.2초, 오류율 3.1%. 15분 내 슬랙 공유용 초안이 필요합니다.",
+      "objective": "status, impact, next_action 키 **JSON**, **객관적 보고 톤**, **간결한 분량**을 모두 지시하세요.",
+      "checklist": [
+        "3키 JSON",
+        "감정 배제 톤",
+        "4문장 이하"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "수치는 입력 데이터로 넘기고, 출력 규칙만 프롬프트에 쓰세요."
+    },
+    {
+      "number": 1023,
+      "id": "x03_pipeline",
+      "level": "expert",
+      "title": "영업 파이프라인 리스크",
+      "domain": "영업기획",
+      "situation": "신규 42건, 협상 18건, 계약 대기 7건. 본부장 보고용 리스크 Top3 JSON이 필요합니다.",
+      "objective": "risk_top3 배열을 포함한 **JSON만**, **경영 보고서 톤**, **4문장 이하** 지시 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON 스키마",
+        "격식체",
+        "분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "'마크다운·설명 금지'를 넣으면 JSON 점수가 올라갑니다."
+    },
+    {
+      "number": 1024,
+      "id": "x04_security",
+      "level": "expert",
+      "title": "보안 사고 초기 보고",
+      "domain": "보안 / 거버넌스",
+      "situation": "비정상 로그인 시도가 탐지되었습니다. CISO에게 1차 보고 JSON과 문구가 필요합니다.",
+      "objective": "incident_id, severity, summary 키 **JSON**, **공식 보고서 톤**, **간결한 분량**을 요구하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "JSON",
+        "비즈니스·공식 톤",
+        "짧은 출력"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "추측·확정을 구분하라고 적으면 전문가답습니다."
+    },
+    {
+      "number": 1025,
+      "id": "x05_governance",
+      "level": "expert",
+      "title": "사내 LLM 가이드라인 점검",
+      "domain": "AI 거버넌스",
+      "situation": "임직원이 고객 개인정보를 LLM에 붙여넣지 않도록 사전 차단 메시지를 설계합니다.",
+      "objective": "policy_violation, message 키 **JSON**, **공식 톤**, **4문장 이하**로 거부·안내 문구를 생성하도록 지시하세요.",
+      "checklist": [
+        "JSON 2키",
+        "공식 존댓말",
+        "분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "개인정보 입력 금지와 출력 형식을 함께 명시하세요."
+    },
+    {
+      "number": 1026,
+      "id": "b06_formal_reply",
+      "level": "beginner",
+      "title": "공식 답변 작성",
+      "domain": "민원응대",
+      "situation": "민원인이 제품 불량을 신고했습니다. 공식 답변 초안을 AI가 작성해야 합니다.",
+      "objective": "**정중한 비즈니스 어투**로 불량 접수 확인 답변을 쓰도록 지시하세요.",
+      "checklist": [
+        "공손한 존댓말, 공식 문체 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '제품 불량 접수 확인 답변을, 정중한 존댓말 공식 문체로 작성해 주세요.'"
+    },
+    {
+      "number": 1027,
+      "id": "b07_simple_summary",
+      "level": "beginner",
+      "title": "한 줄 요약",
+      "domain": "리서치",
+      "situation": "긴 보도자료를 읽고 팀 단톡방에 올릴 짧은 요약이 필요합니다.",
+      "objective": "**3문장 이하**로 핵심만 요약하도록 지시하세요.",
+      "checklist": [
+        "3문장 이하 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '보도자료 핵심을 세 문장 이하로 요약해 주세요.'"
+    },
+    {
+      "number": 1028,
+      "id": "b08_no_slang",
+      "level": "beginner",
+      "title": "속어 없는 안내",
+      "domain": "사내 챗봇",
+      "situation": "사내 AI 봇이 '~했죠?', '완전 좋아요!' 같은 속어·감탄사를 씁니다.",
+      "objective": "**격식 있는 업무 문체**를 쓰도록 지시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "속어·감탄사 배제, 존댓말 요구"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '속어와 감탄사 없이, 업무 공문 수준의 존댓말로 답해 주세요.'"
+    },
+    {
+      "number": 1029,
+      "id": "b09_short_notice",
+      "level": "beginner",
+      "title": "공지 짧게",
+      "domain": "팀 운영",
+      "situation": "신규 복지 혜택 공지를 슬랙에 올립니다. 너무 길면 읽지 않습니다.",
+      "objective": "**4문장 이하** 공지문을 쓰도록 지시하세요.",
+      "checklist": [
+        "문장 수 상한 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '신규 복지 혜택 공지를 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1030,
+      "id": "b10_polite_decline",
+      "level": "beginner",
+      "title": "정중한 거절",
+      "domain": "CS",
+      "situation": "고객 요청이 정책상 불가능합니다. 정중하게 거절하는 문구가 필요합니다.",
+      "objective": "**비즈니스 존댓말**로 거절 문구를 쓰도록 지시하세요.",
+      "checklist": [
+        "격식 있는 톤, 존댓말 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '고객 요청 거절 안내를 정중한 비즈니스 존댓말로 작성해 주세요.'"
+    },
+    {
+      "number": 1031,
+      "id": "b11_remind_email",
+      "level": "beginner",
+      "title": "리마인드 메일",
+      "domain": "행정",
+      "situation": "다음 주 제출 마감을 팀원에게 리마인드하는 메일이 필요합니다.",
+      "objective": "**공손한 업무 톤**으로 리마인드 메일 초안을 쓰도록 지시하세요.",
+      "checklist": [
+        "공손한 문체 지시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '마감 리마인드 메일을 공손한 업무 어투로 작성해 주세요.'"
+    },
+    {
+      "number": 1032,
+      "id": "b12_two_sentence",
+      "level": "beginner",
+      "title": "두 문장 소개",
+      "domain": "마케팅",
+      "situation": "앱 스토어 설명란에 들어갈 짧은 앱 소개가 필요합니다.",
+      "objective": "**2문장 이내**로 앱을 소개하도록 지시하세요.",
+      "checklist": [
+        "2문장 이하 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '앱 소개를 두 문장 이내로 간결하게 작성해 주세요.'"
+    },
+    {
+      "number": 1033,
+      "id": "b13_formal_sms",
+      "level": "beginner",
+      "title": "공식 SMS",
+      "domain": "금융",
+      "situation": "고객에게 보낼 결제 완료 SMS 문구가 필요합니다. 격식이 있어야 합니다.",
+      "objective": "**격식 있는 비즈니스 톤**으로 SMS 문구를 쓰도록 지시하세요.",
+      "checklist": [
+        "격식체, 존댓말 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '결제 완료 안내 SMS를 격식 있는 존댓말로 작성해 주세요.'"
+    },
+    {
+      "number": 1034,
+      "id": "b14_short_thanks",
+      "level": "beginner",
+      "title": "짧은 감사 메시지",
+      "domain": "CS",
+      "situation": "구매 후 고객에게 보낼 감사 문자 1~2문장이 필요합니다.",
+      "objective": "**2문장 이하**로 감사 문자를 쓰도록 지시하세요.",
+      "checklist": [
+        "문장 수 상한 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '구매 감사 문자를 두 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1035,
+      "id": "b15_tone_guide",
+      "level": "beginner",
+      "title": "톤 가이드 적용",
+      "domain": "브랜딩",
+      "situation": "브랜드 가이드에 따라 '정중하되 따뜻한' 톤이 필요합니다.",
+      "objective": "**정중하고 따뜻한 비즈니스 톤**을 명시하는 프롬프트를 작성하세요.",
+      "checklist": [
+        "구체적 톤 지시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '정중하면서도 따뜻한 브랜드 어투로 답해 주세요.'"
+    },
+    {
+      "number": 1036,
+      "id": "e06_json_address",
+      "level": "elementary",
+      "title": "주소 JSON",
+      "domain": "배송",
+      "situation": "배송지 주소를 city, district, detail 키의 JSON으로 저장하려 합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요. (키: city, district, detail)",
+      "checklist": [
+        "JSON 출력, 키 명시"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'city, district, detail 키를 가진 JSON 객체로만 출력하세요.'"
+    },
+    {
+      "number": 1037,
+      "id": "e07_score_json",
+      "level": "elementary",
+      "title": "점수 JSON",
+      "domain": "교육",
+      "situation": "학생 이름과 점수를 name, score 키의 JSON으로 추출하려 합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON 단일 출력, 키 명시"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'name과 score 키만 가진 JSON으로만 출력하세요.'"
+    },
+    {
+      "number": 1038,
+      "id": "e08_brief_bio",
+      "level": "elementary",
+      "title": "짧은 인물 소개",
+      "domain": "HR",
+      "situation": "신입 직원 온보딩 자료에 들어갈 짧은 자기소개 문단이 필요합니다.",
+      "objective": "**비즈니스 존댓말**, **3문장 이하**로 소개문을 쓰도록 지시하세요.",
+      "checklist": [
+        "톤+분량 동시 제어"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '비즈니스 존댓말로 세 문장 이하 자기소개를 작성해 주세요.'"
+    },
+    {
+      "number": 1039,
+      "id": "e09_event_notice",
+      "level": "elementary",
+      "title": "행사 안내",
+      "domain": "이벤트",
+      "situation": "사내 체육대회 안내 공지를 작성합니다. 슬랙에 올릴 짧고 공식적인 문구입니다.",
+      "objective": "**격식 있는 톤**으로 **4문장 이하** 안내문을 쓰도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '체육대회 안내를 격식 있는 존댓말로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1040,
+      "id": "e10_tag_json",
+      "level": "elementary",
+      "title": "태그 JSON",
+      "domain": "콘텐츠",
+      "situation": "블로그 글에서 주제 태그를 tags 배열 JSON으로 추출하려 합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요. (키: tags, 배열)",
+      "checklist": [
+        "JSON, 배열 키 명시"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'tags 키에 문자열 배열을 담은 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1041,
+      "id": "e11_short_pitch",
+      "level": "elementary",
+      "title": "짧은 피치",
+      "domain": "스타트업",
+      "situation": "투자자에게 보낼 1분 엘리베이터 피치 초안이 필요합니다.",
+      "objective": "**비즈니스 톤**, **3문장 이하**로 피치를 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '투자자용 엘리베이터 피치를 격식 있는 어투로 세 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1042,
+      "id": "e12_rating_json",
+      "level": "elementary",
+      "title": "평점 JSON",
+      "domain": "리뷰",
+      "situation": "리뷰 텍스트에서 product, rating, comment 키의 JSON을 추출합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, 키 3개 명시"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'product, rating, comment 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1043,
+      "id": "e13_oneline_rule",
+      "level": "elementary",
+      "title": "한 줄 규칙 안내",
+      "domain": "운영",
+      "situation": "앱 사용 규칙 안내를 한 문장으로 줄여야 합니다.",
+      "objective": "**1문장 이내**로 규칙을 안내하도록 지시하세요.",
+      "checklist": [
+        "1문장 제한 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '사용 규칙을 한 문장으로만 안내해 주세요.'"
+    },
+    {
+      "number": 1044,
+      "id": "e14_formal_push",
+      "level": "elementary",
+      "title": "공식 푸시알림",
+      "domain": "앱",
+      "situation": "앱 푸시 알림 문구를 격식 있게 작성해야 합니다.",
+      "objective": "**비즈니스 톤**으로 푸시 알림을 쓰도록 지시하세요.",
+      "checklist": [
+        "격식 있는 톤 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '앱 푸시 알림을 격식 있는 비즈니스 어투로 작성해 주세요.'"
+    },
+    {
+      "number": 1045,
+      "id": "e15_keyword_json",
+      "level": "elementary",
+      "title": "키워드 JSON",
+      "domain": "SEO",
+      "situation": "본문에서 SEO 키워드를 keywords 배열 JSON으로 추출합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, keywords 배열"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'keywords 배열을 가진 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1046,
+      "id": "i06_contract_json",
+      "level": "intermediate",
+      "title": "계약 요약 JSON",
+      "domain": "법무",
+      "situation": "계약서 초안에서 parties, start_date, end_date 키를 JSON으로 추출합니다.",
+      "objective": "**JSON만**, **비즈니스 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'parties, start_date, end_date 키의 JSON만, 격식 있는 문체로 출력하세요.'"
+    },
+    {
+      "number": 1047,
+      "id": "i07_complaint_reply",
+      "level": "intermediate",
+      "title": "불만 답변",
+      "domain": "CS",
+      "situation": "고객이 배송 파손을 신고했습니다. 공식 답변 초안이 필요합니다.",
+      "objective": "**정중한 톤**, **4문장 이하** 사과·해결 안내를 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '배송 파손 사과 답변을 정중한 존댓말로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1048,
+      "id": "i08_kpi_json",
+      "level": "intermediate",
+      "title": "KPI JSON",
+      "domain": "전략",
+      "situation": "분기 KPI 달성률을 kpi_name, target, actual, rate 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, 키 4개"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'kpi_name, target, actual, rate 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1049,
+      "id": "i09_release_note",
+      "level": "intermediate",
+      "title": "릴리즈 노트",
+      "domain": "개발",
+      "situation": "앱 v2.3.0 주요 변경사항을 릴리즈 노트로 씁니다.",
+      "objective": "**비즈니스 톤**, **4문장 이하**로 릴리즈 노트를 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '릴리즈 노트를 격식 있는 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1050,
+      "id": "i10_survey_json",
+      "level": "intermediate",
+      "title": "설문 결과 JSON",
+      "domain": "리서치",
+      "situation": "설문 결과에서 question, avg_score, top_comment를 JSON으로 추출합니다.",
+      "objective": "**JSON만**, **격식 있는 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'question, avg_score, top_comment 키의 JSON만, 격식 있는 문체로 출력하세요.'"
+    },
+    {
+      "number": 1051,
+      "id": "i11_refund_guide",
+      "level": "intermediate",
+      "title": "환불 안내",
+      "domain": "이커머스",
+      "situation": "환불 정책 안내를 고객에게 발송합니다.",
+      "objective": "**공손한 비즈니스 톤**, **4문장 이하**로 환불 안내를 쓰도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '환불 안내를 공손한 존댓말로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1052,
+      "id": "i12_log_json",
+      "level": "intermediate",
+      "title": "로그 JSON",
+      "domain": "운영",
+      "situation": "서버 오류 로그에서 timestamp, error_code, message를 JSON으로 추출합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, 키 3개"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'timestamp, error_code, message 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1053,
+      "id": "i13_hr_notice",
+      "level": "intermediate",
+      "title": "인사 공지",
+      "domain": "HR",
+      "situation": "임원 인사이동 공지를 사내 전체에 발송합니다.",
+      "objective": "**공식 비즈니스 톤**, **4문장 이하**로 공지문을 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '임원 인사이동 공지를 공식 비즈니스 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1054,
+      "id": "i14_review_json",
+      "level": "intermediate",
+      "title": "리뷰 분류 JSON",
+      "domain": "분석",
+      "situation": "고객 리뷰에서 sentiment, score, summary 키의 JSON을 추출합니다.",
+      "objective": "**JSON만**, **격식 있는 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'sentiment, score, summary 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1055,
+      "id": "i15_brief_report",
+      "level": "intermediate",
+      "title": "간략 보고서",
+      "domain": "기획",
+      "situation": "주간 매출 현황을 임원에게 보고하는 짧은 메시지가 필요합니다.",
+      "objective": "**보고서 톤**, **3문장 이하**로 매출 현황을 보고하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '주간 매출 현황을 보고서 어투로 세 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1056,
+      "id": "a06_audit_json",
+      "level": "advanced",
+      "title": "감사 결과 JSON",
+      "domain": "컴플라이언스",
+      "situation": "내부 감사 결과를 area, finding, severity 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **비즈니스 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'area, finding, severity 키의 JSON만, 격식 있는 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1057,
+      "id": "a07_nps_summary",
+      "level": "advanced",
+      "title": "NPS 요약",
+      "domain": "CX",
+      "situation": "NPS 조사 결과를 score, promoters, detractors 키의 JSON으로 요약합니다.",
+      "objective": "**JSON만**, **비즈니스 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'score, promoters, detractors 키의 JSON만, 격식 있는 어투로 출력하세요.'"
+    },
+    {
+      "number": 1058,
+      "id": "a08_vendor_eval",
+      "level": "advanced",
+      "title": "벤더 평가 JSON",
+      "domain": "구매",
+      "situation": "벤더 평가 결과를 vendor, score, recommendation 키의 JSON으로 정리합니다.",
+      "objective": "**순수 JSON**, **객관적 보고 톤**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'vendor, score, recommendation 키의 순수 JSON으로 출력하세요.'"
+    },
+    {
+      "number": 1059,
+      "id": "a09_ux_brief",
+      "level": "advanced",
+      "title": "UX 개선 브리핑",
+      "domain": "디자인",
+      "situation": "앱 UX 개선 제안을 팀에 공유합니다. 간결한 브리핑이 필요합니다.",
+      "objective": "**비즈니스 톤**, **4문장 이하**로 UX 브리핑을 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'UX 개선 브리핑을 격식 있는 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1060,
+      "id": "a10_risk_json",
+      "level": "advanced",
+      "title": "리스크 JSON",
+      "domain": "리스크관리",
+      "situation": "프로젝트 리스크를 risk_id, description, impact 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'risk_id, description, impact 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1061,
+      "id": "a11_onboard_json",
+      "level": "advanced",
+      "title": "온보딩 체크 JSON",
+      "domain": "HR",
+      "situation": "신입 온보딩 체크리스트를 task, owner, due_date 키의 JSON으로 만듭니다.",
+      "objective": "**JSON만**, **비즈니스 톤**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'task, owner, due_date 키의 JSON만 격식 있는 어투로 출력하세요.'"
+    },
+    {
+      "number": 1062,
+      "id": "a12_escalation",
+      "level": "advanced",
+      "title": "에스컬레이션 안내",
+      "domain": "CS 관리",
+      "situation": "고객 불만이 2단계로 에스컬레이션되었습니다. 담당자에게 전달할 공식 메모가 필요합니다.",
+      "objective": "**공식 보고서 톤**, **4문장 이하**로 에스컬레이션 메모를 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '에스컬레이션 메모를 공식 보고서 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1063,
+      "id": "a13_product_json",
+      "level": "advanced",
+      "title": "제품 스펙 JSON",
+      "domain": "개발",
+      "situation": "제품 스펙을 name, version, features 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **비즈니스 톤**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'name, version, features 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1064,
+      "id": "a14_consent_notice",
+      "level": "advanced",
+      "title": "동의서 공지",
+      "domain": "법무",
+      "situation": "개인정보 수집 동의서 안내 공지를 작성합니다.",
+      "objective": "**공식 법률 톤**, **4문장 이하**로 동의서 공지를 쓰도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '개인정보 동의서 공지를 공식 법률 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1065,
+      "id": "a15_cost_json",
+      "level": "advanced",
+      "title": "비용 JSON",
+      "domain": "재무",
+      "situation": "프로젝트 비용을 category, budget, actual, variance 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **보고서 톤**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: 'category, budget, actual, variance 키의 JSON만 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1066,
+      "id": "x06_m_and_a",
+      "level": "expert",
+      "title": "M&A 실사 요약",
+      "domain": "전략",
+      "situation": "인수 대상 기업 실사 결과를 target, valuation, red_flags 키의 JSON으로 요약합니다.",
+      "objective": "**JSON만**, **공식 보고서 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: 'target, valuation, red_flags 키의 JSON만, 임원 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1067,
+      "id": "x07_crisis_comm",
+      "level": "expert",
+      "title": "위기 커뮤니케이션",
+      "domain": "PR",
+      "situation": "제품 리콜 발생 시 공식 입장문을 작성합니다. 법무 검토 전 초안입니다.",
+      "objective": "**공식 성명 톤**, **4문장 이하**, **JSON**(statement, action_plan)으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: 'statement, action_plan 키의 JSON만, 공식 성명 어투로 출력하세요.'"
+    },
+    {
+      "number": 1068,
+      "id": "x08_board_report",
+      "level": "expert",
+      "title": "이사회 보고",
+      "domain": "거버넌스",
+      "situation": "이사회에 제출할 분기 실적 요약 JSON이 필요합니다.",
+      "objective": "**JSON**(revenue, growth, outlook), **임원 보고서 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: 'revenue, growth, outlook 키의 JSON만, 이사회 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1069,
+      "id": "x09_data_breach",
+      "level": "expert",
+      "title": "데이터 유출 대응",
+      "domain": "보안",
+      "situation": "고객 데이터 유출 사고가 발생했습니다. 초기 대응 보고서 JSON이 필요합니다.",
+      "objective": "**JSON**(incident_id, affected_count, containment_status), **공식 보안 보고 톤**, **간결**하게 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 공식 보안 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1070,
+      "id": "x10_ai_policy",
+      "level": "expert",
+      "title": "AI 사용 정책 점검",
+      "domain": "AI 거버넌스",
+      "situation": "임직원 AI 사용 정책 위반 여부를 자동 감지하는 프롬프트를 설계합니다.",
+      "objective": "**JSON**(violation_type, severity, recommendation), **공식 감사 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 공식 감사 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1071,
+      "id": "x11_supply_risk",
+      "level": "expert",
+      "title": "공급망 리스크 보고",
+      "domain": "물류",
+      "situation": "공급망 중단 리스크를 supplier, risk_level, mitigation 키의 JSON으로 보고합니다.",
+      "objective": "**JSON만**, **임원 보고 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: 'supplier, risk_level, mitigation 키의 JSON만 임원 보고 어투로 출력하세요.'"
+    },
+    {
+      "number": 1072,
+      "id": "x12_regulatory",
+      "level": "expert",
+      "title": "규제 준수 점검",
+      "domain": "컴플라이언스",
+      "situation": "신규 서비스의 규제 준수 항목을 regulation, status, action 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **법무 보고서 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: 'regulation, status, action 키의 JSON만, 법무 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1073,
+      "id": "x13_exec_briefing",
+      "level": "expert",
+      "title": "경영진 브리핑",
+      "domain": "전략",
+      "situation": "주요 사업 지표를 경영진에게 보고하는 1페이지 브리핑 JSON이 필요합니다.",
+      "objective": "**JSON**(kpi_name, value, trend), **경영 보고서 톤**, **간결**하게 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: 'kpi_name, value, trend 키의 JSON만, 경영 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1074,
+      "id": "x14_merger_notice",
+      "level": "expert",
+      "title": "합병 공지",
+      "domain": "IR",
+      "situation": "회사 합병 사실을 주주에게 공식 통보하는 공지문 JSON이 필요합니다.",
+      "objective": "**JSON**(announcement, effective_date, impact), **공식 IR 톤**, **간결**하게 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 공식 IR 어투로 출력하세요.'"
+    },
+    {
+      "number": 1075,
+      "id": "x15_llm_audit",
+      "level": "expert",
+      "title": "LLM 출력 감사",
+      "domain": "AI 거버넌스",
+      "situation": "LLM 출력이 사내 기준을 위반하는지 자동 판별하는 시스템 프롬프트를 설계합니다.",
+      "objective": "**JSON**(check_id, result, reason), **감사 보고서 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 감사 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1076,
+      "id": "b16_thank_note",
+      "level": "beginner",
+      "title": "감사 노트 작성",
+      "domain": "CS",
+      "situation": "VIP 고객이 장기 이용 5주년을 맞았습니다. 감사 노트가 필요합니다.",
+      "objective": "**정중한 비즈니스 어투**로 감사 노트를 쓰도록 지시하세요.",
+      "checklist": [
+        "격식 있는 톤 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '장기 고객 감사 노트를 정중한 비즈니스 존댓말로 작성해 주세요.'"
+    },
+    {
+      "number": 1077,
+      "id": "b17_short_intro",
+      "level": "beginner",
+      "title": "서비스 한 줄 소개",
+      "domain": "마케팅",
+      "situation": "명함 뒷면에 들어갈 서비스 한 줄 소개가 필요합니다.",
+      "objective": "**1문장 이내**로 서비스를 소개하도록 지시하세요.",
+      "checklist": [
+        "1문장 이내 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '서비스를 한 문장으로만 소개해 주세요.'"
+    },
+    {
+      "number": 1078,
+      "id": "b18_no_jargon",
+      "level": "beginner",
+      "title": "전문 용어 없이 설명",
+      "domain": "교육",
+      "situation": "IT 비전공자 임원에게 클라우드 개념을 설명해야 합니다.",
+      "objective": "**전문 용어 없이**, **비즈니스 톤**으로 설명하도록 지시하세요.",
+      "checklist": [
+        "전문 용어 배제, 격식 있는 어투"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '전문 용어 없이 비즈니스 존댓말로 설명해 주세요.'"
+    },
+    {
+      "number": 1079,
+      "id": "b19_deadline_remind",
+      "level": "beginner",
+      "title": "마감 알림 메시지",
+      "domain": "프로젝트",
+      "situation": "프로젝트 마감 D-3 알림 메시지를 팀에 발송합니다.",
+      "objective": "**격식 있는 업무 톤**으로 마감 알림을 쓰도록 지시하세요.",
+      "checklist": [
+        "격식 있는 톤 명시"
+      ],
+      "active_constraints": [
+        "business_tone"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '프로젝트 마감 D-3 알림을 격식 있는 업무 어투로 작성해 주세요.'"
+    },
+    {
+      "number": 1080,
+      "id": "b20_three_lines",
+      "level": "beginner",
+      "title": "3줄 요약",
+      "domain": "리서치",
+      "situation": "긴 보고서를 3줄로 요약해서 임원에게 전달해야 합니다.",
+      "objective": "**3문장 이내**로 요약하도록 지시하세요.",
+      "checklist": [
+        "3문장 이내 수치 명시"
+      ],
+      "active_constraints": [
+        "length_limit"
+      ],
+      "pass_threshold": 45,
+      "hint": "예: '보고서 핵심을 세 문장 이내로 요약해 주세요.'"
+    },
+    {
+      "number": 1081,
+      "id": "e16_user_json",
+      "level": "elementary",
+      "title": "사용자 정보 JSON",
+      "domain": "회원 관리",
+      "situation": "회원 정보에서 user_id, email, role을 JSON으로 추출합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요. (키: user_id, email, role)",
+      "checklist": [
+        "JSON 단일 출력, 키 3개 명시"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'user_id, email, role 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1082,
+      "id": "e17_brief_plan",
+      "level": "elementary",
+      "title": "짧은 실행 계획",
+      "domain": "기획",
+      "situation": "신규 프로젝트 킥오프 전 간단한 실행 계획이 필요합니다.",
+      "objective": "**비즈니스 톤**, **4문장 이하**로 실행 계획을 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '프로젝트 실행 계획을 비즈니스 존댓말로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1083,
+      "id": "e18_feedback_json",
+      "level": "elementary",
+      "title": "피드백 JSON",
+      "domain": "HR",
+      "situation": "직원 성과 피드백을 category, comment, rating 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, 키 3개"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'category, comment, rating 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1084,
+      "id": "e19_welcome_msg",
+      "level": "elementary",
+      "title": "신규 직원 환영 메시지",
+      "domain": "HR",
+      "situation": "신규 직원 입사 첫날 슬랙 메시지가 필요합니다.",
+      "objective": "**비즈니스 톤**, **3문장 이하**로 환영 메시지를 쓰도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: '신규 직원 환영 메시지를 비즈니스 존댓말로 세 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1085,
+      "id": "e20_task_json",
+      "level": "elementary",
+      "title": "업무 목록 JSON",
+      "domain": "PM",
+      "situation": "오늘 할 일 목록을 task, priority, assignee 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만** 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON, 키 3개"
+      ],
+      "active_constraints": [
+        "json_format"
+      ],
+      "pass_threshold": 52,
+      "hint": "예: 'task, priority, assignee 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1086,
+      "id": "i16_error_report",
+      "level": "intermediate",
+      "title": "오류 보고서 JSON",
+      "domain": "운영",
+      "situation": "시스템 오류 보고서를 error_type, timestamp, affected_users 키의 JSON으로 작성합니다.",
+      "objective": "**JSON만**, **객관적 보고 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '세 키의 JSON만 객관적 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1087,
+      "id": "i17_partner_intro",
+      "level": "intermediate",
+      "title": "파트너사 소개",
+      "domain": "BD",
+      "situation": "잠재 파트너사에게 보낼 회사 소개 초안이 필요합니다.",
+      "objective": "**비즈니스 톤**, **4문장 이하**로 소개문을 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '회사 소개를 비즈니스 존댓말로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1088,
+      "id": "i18_ticket_json",
+      "level": "intermediate",
+      "title": "지원 티켓 JSON",
+      "domain": "IT 지원",
+      "situation": "지원 티켓 정보를 ticket_id, issue, priority 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **격식 있는 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'ticket_id, issue, priority 키의 JSON만 출력하세요.'"
+    },
+    {
+      "number": 1089,
+      "id": "i19_leave_request",
+      "level": "intermediate",
+      "title": "휴가 신청 안내",
+      "domain": "HR",
+      "situation": "연차 휴가 신청 방법 안내를 직원들에게 발송합니다.",
+      "objective": "**공식 비즈니스 톤**, **4문장 이하**로 안내문을 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: '연차 신청 안내를 공식 비즈니스 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1090,
+      "id": "i20_metric_json",
+      "level": "intermediate",
+      "title": "지표 JSON",
+      "domain": "데이터",
+      "situation": "월별 핵심 지표를 metric, value, change 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **보고서 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 58,
+      "hint": "예: 'metric, value, change 키의 JSON만 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1091,
+      "id": "a16_renewal_notice",
+      "level": "advanced",
+      "title": "계약 갱신 공지",
+      "domain": "법무",
+      "situation": "주요 거래처와의 계약 갱신 안내를 발송합니다.",
+      "objective": "**공식 법무 톤**, **4문장 이하**, **JSON**(party, renewal_date, terms)으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '세 키의 JSON만, 공식 법무 어투로 네 문장 이하로 출력하세요.'"
+    },
+    {
+      "number": 1092,
+      "id": "a17_sales_forecast",
+      "level": "advanced",
+      "title": "매출 예측 JSON",
+      "domain": "영업",
+      "situation": "다음 분기 매출 예측을 period, forecast, confidence 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **비즈니스 보고 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '세 키의 JSON만, 비즈니스 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1093,
+      "id": "a18_training_notice",
+      "level": "advanced",
+      "title": "교육 이수 공지",
+      "domain": "HR",
+      "situation": "법정 의무 교육 이수 안내를 전 직원에게 발송합니다.",
+      "objective": "**공식 공지 톤**, **4문장 이하**로 교육 이수 안내를 작성하도록 지시하세요.",
+      "checklist": [
+        "톤+분량"
+      ],
+      "active_constraints": [
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '의무 교육 이수 안내를 공식 어투로 네 문장 이하로 작성해 주세요.'"
+    },
+    {
+      "number": 1094,
+      "id": "a19_api_doc",
+      "level": "advanced",
+      "title": "API 오류 JSON",
+      "domain": "개발",
+      "situation": "API 오류 응답을 error_code, message, retry_after 키의 JSON으로 표준화합니다.",
+      "objective": "**JSON만**, **기술 문서 톤**으로 출력하도록 지시하세요.",
+      "checklist": [
+        "JSON+톤"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '세 키의 JSON만, 기술 문서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1095,
+      "id": "a20_exit_interview",
+      "level": "advanced",
+      "title": "퇴직 면담 요약",
+      "domain": "HR",
+      "situation": "퇴직자 면담 결과를 reason, feedback, recommendation 키의 JSON으로 정리합니다.",
+      "objective": "**JSON만**, **객관적 보고 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 62,
+      "hint": "예: '세 키의 JSON만, 객관적 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1096,
+      "id": "x16_esg_report",
+      "level": "expert",
+      "title": "ESG 보고 JSON",
+      "domain": "지속가능경영",
+      "situation": "ESG 경영 현황을 category, score, initiative 키의 JSON으로 이사회에 보고합니다.",
+      "objective": "**JSON만**, **이사회 보고서 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: '세 키의 JSON만, 이사회 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1097,
+      "id": "x17_litigation",
+      "level": "expert",
+      "title": "소송 리스크 요약",
+      "domain": "법무",
+      "situation": "진행 중인 소송의 리스크를 case_id, risk_level, legal_opinion 키의 JSON으로 요약합니다.",
+      "objective": "**JSON만**, **법무 보고서 톤**, **간결한 분량**으로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 65,
+      "hint": "예: '세 키의 JSON만, 법무 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1098,
+      "id": "x18_ipo_notice",
+      "level": "expert",
+      "title": "IPO 공시 초안",
+      "domain": "IR",
+      "situation": "IPO 준비 중인 회사의 공시 초안 JSON이 필요합니다.",
+      "objective": "**JSON**(disclosure_type, content, effective_date), **공식 공시 톤**, **간결**하게 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 공식 공시 어투로 출력하세요.'"
+    },
+    {
+      "number": 1099,
+      "id": "x19_whistleblower",
+      "level": "expert",
+      "title": "내부 신고 접수 JSON",
+      "domain": "컴플라이언스",
+      "situation": "내부 비리 신고 접수 내용을 report_id, category, severity 키의 JSON으로 처리합니다.",
+      "objective": "**JSON만**, **공식 감사 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 공식 감사 보고서 어투로 출력하세요.'"
+    },
+    {
+      "number": 1100,
+      "id": "x20_ai_governance",
+      "level": "expert",
+      "title": "AI 윤리 점검 JSON",
+      "domain": "AI 거버넌스",
+      "situation": "사내 AI 모델의 윤리 기준 준수 여부를 model_id, ethics_score, violation_flags 키의 JSON으로 보고합니다.",
+      "objective": "**JSON만**, **감사 보고서 톤**, **4문장 이하**로 지시하세요.",
+      "checklist": [
+        "JSON+톤+분량"
+      ],
+      "active_constraints": [
+        "json_format",
+        "business_tone",
+        "length_limit"
+      ],
+      "pass_threshold": 66,
+      "hint": "예: '세 키의 JSON만, 감사 보고서 어투로 출력하세요.'"
+    }
+  ]
+}
