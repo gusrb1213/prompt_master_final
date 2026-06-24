@@ -12,8 +12,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
+import streamlit as st  # 1. 라이브러리 임포트 추가
 
-OPENAI_API_KEY = "YOUR_API_KEY"
 JUDGE_MODEL    = "gpt-4o"
 EXEC_MODEL     = "gpt-4o"
 
@@ -61,8 +61,7 @@ class ComplianceResult:
 # ════════════════════════════════════════════════════════
 def _get_client():
     from openai import OpenAI
-    return OpenAI(api_key=OPENAI_API_KEY)
-
+    return OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def _chat(messages: list[dict], model: str = EXEC_MODEL, temperature: float = 0.3) -> str:
     client = _get_client()
